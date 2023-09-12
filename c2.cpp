@@ -10,21 +10,40 @@ int M,N;
 vector<vector<int> > alpha;
 vector<vector<int> > beta;
 
+/**
+ * @brief 경로 구하기
+ * 
+ * @param adj_list 인접 리스트
+ * @param target 현재의 도시
+ * @param path 여태까지 온 경로
+ * @param type alpha 인지 beta인지 구분
+ */
+
 void DFS(vector<int> adj_list[], int target, vector<int> path , string type){
     
     path.push_back(target);
 
+    // 마지막 도시 도착
     if(target == N){
         if(type == "alpha") alpha.push_back(path);
         else if(type == "beta") beta.push_back(path);
         return;
     }
 
+    // 완전 탐색
     for(int i = 0 ; i < adj_list[target-1].size(); ++i) DFS(adj_list, adj_list[target-1][i] , path, type);
 }
 
 
-
+/**
+ * @brief 알파 베타의 각각의 경로를 통해 가장 적은 연료 사용량을 구한다.
+ * @details 겹치는 구간이 있는 지 확인하고 연료 사용량을 구한다.
+ * 
+ * @param p 알파 연료 사용량
+ * @param q 베타 연료 사용량
+ * @param r 함께 사용하는 연료량
+ * @return long long int 정답
+ */
 long long int cal_min_fuel(int p , int q , int r){
     
     long long int answer = 999999;
@@ -33,9 +52,11 @@ long long int cal_min_fuel(int p , int q , int r){
      * @brief 안 겹칠 때
      * 
      */
+
     for(int i = 0 ; i < alpha.size() ; ++i){
         for(int j = 0 ; j < beta.size(); ++j){
 
+            // 경로 겹치는 지 확인
             long long int tempAlpha = 0;
 
             for(int i2 = 0 ; i2 < alpha[i].size() ; ++i2){
@@ -43,8 +64,8 @@ long long int cal_min_fuel(int p , int q , int r){
                 
                 for(int j2 = 0 ; j2 < beta[j].size() ; ++j2){
                     
+                    // 경로가 겹쳤을 때
                     if(alpha[i][i2] == beta[j][j2]){
-                        // cout << "min result" << tempAlpha << ' ' << tempBeta << ' ' << min((alpha[i].size()- i2) , (beta[j].size()-j2)) << endl; 
                         answer = min( answer , static_cast<long long int>(tempAlpha + tempBeta + min((alpha[i].size()- i2-1) , (beta[j].size()-j2-1)) * r));
                     }
                     tempBeta += q;
@@ -52,14 +73,12 @@ long long int cal_min_fuel(int p , int q , int r){
                 tempAlpha += p;
             }
 
+            // 경로가 겹치지 않았을 때
             answer = min(answer, static_cast<long long int>(alpha[i].size() * p + beta[j].size() * q));
-            // cout << "min result" << answer << endl;
         }
     }
 
-
     return answer;
-
 }
 
 int main() {
@@ -67,9 +86,9 @@ int main() {
     /**
      * @brief 풀이 방법
      * 0) 인접리스트
-     * 1) 알파의 모든 경우의 수 구한다.
-     * 2) 베타의 모든 경우의 수 구한다.
-     * 3) 양쪽의 각 경우의 수를 이중 포문으로 돌면서 계산한다.
+     * 1) 알파의 모든 경로 구한다.
+     * 2) 베타의 모든 경로 구한다.
+     * 3) 양쪽의 각 경로를 이중 포문으로 돌면서 계산한다.
      * 
      */
 
@@ -84,8 +103,9 @@ int main() {
     cin >> p >> q >> r >> N >> M;
     
     vector<int> adj_list[N];
+
     /**
-     * @brief 인접리스트 만들기
+     * @brief 0)인접리스트 만들기
      *  O(M)
      */
 
@@ -100,7 +120,7 @@ int main() {
 
     /**
      * @brief 인접리스트 테스트
-     * 
+     *  
      */
 
     // for(int i = 0 ; i < N ; ++i){
@@ -112,38 +132,46 @@ int main() {
     
     vector<int> path;
 
-/**
- * @brief 알파의 모든 경우의 수 구하기
- * 
- */
+    /**
+     * @brief 1) 알파의 모든 경로 구하기
+     * 
+     */
     DFS(adj_list , 1 ,path,"alpha");
 
     /**
-     * @brief 베타의 모든 경우의 수 구하기
+     * @brief 베타의 모든 경로 구하기
      * 
      */
     DFS(adj_list , 2 ,path,"beta");
 
 
-    cout << "----alpha----" << endl;
+    /**
+     * @brief 경로 확인
+     * 
+     */
 
-    for(int i = 0 ; i < alpha.size() ; ++i){
-        for(int j = 0 ; j < alpha[i].size(); ++j){
-            cout << alpha[i][j] << ' ';
-        }
-        cout << endl;
-    }
+    // cout << "----alpha----" << endl;
 
-    cout << "----beta----" << endl;
+    // for(int i = 0 ; i < alpha.size() ; ++i){
+    //     for(int j = 0 ; j < alpha[i].size(); ++j){
+    //         cout << alpha[i][j] << ' ';
+    //     }
+    //     cout << endl;
+    // }
 
-     for(int i = 0 ; i < beta.size() ; ++i){
-        for(int j = 0 ; j < beta[i].size(); ++j){
-            cout << beta[i][j] << ' ';
-        }
-        cout << endl;
-    }
+    // cout << "----beta----" << endl;
 
-    
+    //  for(int i = 0 ; i < beta.size() ; ++i){
+    //     for(int j = 0 ; j < beta[i].size(); ++j){
+    //         cout << beta[i][j] << ' ';
+    //     }
+    //     cout << endl;
+    // }
+
+    /**
+     * @brief 두 경로를 통해서 가장 적은 연료를 사용하는 것을 구한다.
+     * 
+     */
     cout << cal_min_fuel(p,q,r);
 
 
