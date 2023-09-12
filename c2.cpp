@@ -5,6 +5,8 @@
 
 using namespace std;
 
+// heap (priority queue)으로 해볼 가치도 있을듯하다.
+
 int M,N;
 
 vector<vector<int> > alpha;

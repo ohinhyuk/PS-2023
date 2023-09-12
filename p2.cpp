@@ -4,6 +4,8 @@
 
 using namespace std;
 
+// heap (priority queue)으로 해볼 가치도 있을듯하다.
+
 int main() {
     /**
      * @brief 해결 방법
