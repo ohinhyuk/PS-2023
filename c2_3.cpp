@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <map>
+#include <queue>
 
 using namespace std;
 
@@ -13,6 +14,16 @@ vector<vector<int> > alpha;
 vector<vector<int> > beta;
 
 
+void BFS(vector<int> adj_list[], int target, vector<int> path , string type ,vector<bool> isVisited){
+    queue<int> q;
+
+    q.push(target);
+
+    while(!q.empty()){
+        target = q.front();
+        
+    }
+}
 
 /**
  * @brief 경로 구하기
@@ -182,11 +193,11 @@ int main() {
      *  
      */
 
-    // for(int i = 0 ; i < N ; ++i){
-    //     for(int j = 0 ; j < adj_list[i].size() ; ++j) cout << adj_list[i][j] << ' ';
+    for(int i = 0 ; i < N ; ++i){
+        for(int j = 0 ; j < adj_list[i].size() ; ++j) cout << adj_list[i][j] << ' ';
 
-    //     cout << endl;
-    // }
+        cout << endl;
+    }
 
     
     vector<int> path;
