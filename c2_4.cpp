@@ -10,9 +10,11 @@ using namespace std;
 int M,N , p ,q ,r;
 
 map<int,int> BFS (vector<int> adj_list[], int target){
+
     map<int,int > m;
     vector<int> isVisited(N,false);
     queue<int> q;
+
     q.push(target);
     
     int distance = 0;
@@ -83,7 +85,7 @@ int main() {
 
     /**
      * @brief 2) 알파 열차 -> 다른 모든 장소의 거리를 구한다.
-     * 
+     * O(N)
      */
 
     map<int,int> m1 = BFS(adj_list , 1);
@@ -107,7 +109,7 @@ int main() {
     
     /**
      * @brief 5) 모든 장소를 탐색하며 (알파 -> 장소) + (베타 -> 장소) + (목적지 -> 장소) 에 사용되는 연료를 구하고 최소 값을 찾는다.
-     * 
+     * O(N)
      */
 
     int answer = mN[1] * p + mN[2] * q;

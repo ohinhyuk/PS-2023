@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <queue>
 
 using namespace std;
 
@@ -22,7 +23,9 @@ int main() {
 
         cin >> N;
 
-        vector<int> v;
+        // vector<int> v;
+        priority_queue<int , vector<int> , greater<int> >pq;
+        
 
     /**
      * @brief 1) 입력받기
@@ -30,7 +33,8 @@ int main() {
      */
         for(int i = 0 ; i < N ; ++i){
             cin >> input;
-            v.push_back(input);
+            // v.push_back(input);
+            pq.push(input);
         }   
 
     /**
@@ -38,32 +42,22 @@ int main() {
      * 
      */
 
-    if(v.size() == 1){
-        cout << v[0];
-        return 0;
-    }
-
-    while(v.size() > 1){
+    while(pq.size() > 1){
         int minSum = 1001;
         int minIdx = 0;
 
-        for(int i = 0 ; i < v.size()-1 ; ++i){
-            int tempSum = v[i] + v[i+1];
-            if(minSum > tempSum){
-                minSum = min(minSum,tempSum);
-                minIdx = i;
-            }
-        }
+        int tempSum = pq.top();
+        pq.pop();
+        tempSum += pq.top();
+        pq.pop();
+
+        answer += tempSum;
         
-        answer += v[minIdx] + v[minIdx + 1];
-        
-        v[minIdx] += v[minIdx+1];
-        
-        v.erase(v.begin() + minIdx+1);
+        pq.push(tempSum);
     }
 
     cout << answer;
-    
+
 
     return 0;
 }
