@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -10,16 +10,21 @@ int main() {
 
     cin >> M;
 
+    // int bags[M];
     vector<int> bags;
 
     int temp;
 
     while(1){
         cin >> temp;
+        if(temp <= M) bags.push_back(temp);
 
-        bags.push_back(temp);
-        if(cin.eof() == 1) break;
-    }
+        if(temp >= M) break;
+    }    
+
+    // for(int i = 0 ; i < M ; ++i){
+    //     cin >> bags[i];
+    // }    
 
     sort(bags.begin() , bags.end());
 
@@ -29,7 +34,7 @@ int main() {
     int answer = 0;
 
     while(start <= end){
-        if(bags[start] + bags[end] <= M){
+        if(bags[start] + bags[end] <= bags.size()){
             start++;
             end--;   
         }else{
